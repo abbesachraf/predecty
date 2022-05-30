@@ -1,0 +1,24 @@
+
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+<title>{% block titre %}about{% endblock%}</title>
+{% block content %}
+<a class="{% block abt %}active{% endblock%}" ></a>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <div class="w3-card-2" style="padding:0 00px; width: 90%;">   
+		<form class="w3-container" method="post" action="">
+                <br/>
+                <textarea class="w3-input w3-border w3-sand" rows="15">Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood sugar. Hyperglycaemia , or raised blood sugar, is a common effect of uncontrolled diabetes and over time leads to serious damage to many of the body's systems, especially the nerves and blood vessels.
+
+                    In 2014, 8.5% of adults aged 18 years and older had diabetes. In 2019, diabetes was the direct cause of 1.5 million deaths and 48% of all deaths due to diabetes occurred before the age of 70 years.
+                    
+                    Between 2000 and 2016, there was a 5% increase in premature mortality rates (i.e. before the age of 70) from diabetes. In high-income countries the premature mortality rate due to diabetes decreased from 2000 to 2010 but then increased in 2010-2016. In lower-middle-income countries, the premature mortality rate due to diabetes increased across both periods.
+                    
+                    By contrast, the probability of dying from any one of the four main noncommunicable diseases (cardiovascular diseases, cancer, chronic respiratory diseases or diabetes) between the ages of 30 and 70 decreased by 18% globally between 2000 and 2016.  </textarea>
+                <br/>
+        </form>
+    </div>
+{% endblock %}

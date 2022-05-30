@@ -1,0 +1,14 @@
+
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+
+<title>{% block titre %}Profil{% endblock%}</title>
+{% block content %}
+
+    
+        <h2 name='username'>username:{{user.username}}</h2>
+    <h2>email:{{user.email}}</h2>
+    <!-- el pass cryptee sha1/4g<h2>{{user.password}}</h2> -->
+   
+    
+{% endblock %}

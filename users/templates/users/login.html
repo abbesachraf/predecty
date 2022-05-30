@@ -1,0 +1,33 @@
+
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+<title>{% block titre %}Login{% endblock%}</title>
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</div>
+<div class="alert alert-{{message.tags}}">{{form.errors}}</div>
+      <div class="w3-card-2" style="padding:0 00px; width: 50%;">  
+        <form class="w3-container" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                        <br/>
+                        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">{{message}}</div>
+          {% endfor %}
+        {% endif %}
+       
+                    <input class="w3-input w3-border w3-sand"  name="username" type="text" placeholder="username"></p>
+                    <input class="w3-input w3-border w3-sand" name="password" type="password" placeholder="password"></p>
+            <div class="form-group" id="signup-button">
+                <button class="btn ">Sign In</button>
+            </div>
+            <div class="form-group">
+                <small class="text-muted ml-3" >Don't have an account yet? <a href="{% url 'register' %}">Sign Up Today</a></small>
+            </div>
+           
+        </form>
+    </div>
+{% endblock %}</title>

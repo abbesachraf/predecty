@@ -1,0 +1,31 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block titre %}Home{% endblock%}</title>
+<a class="{% block hme %}active{% endblock%}" ></a>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  </div>
+  <div class="w3-card-2" style="padding:0 00px; width: 30%;">
+    
+  <form class="w3-container" action="home.html?result" method="post"  >
+
+        <input readonly hidden name="username" value={{user.username}} ></input>
+        <input readonly hidden name="email" value={{user.email}} ></input>
+    {% csrf_token %}
+    </p>
+    <input class="w3-input w3-border w3-sand" name="n1" type="text" placeholder="Number of Pregnancies eg. 0"></p>
+    <input class="w3-input w3-border w3-sand" name="n2" type="text" placeholder="Glucose (mg/dL) eg. 80"></p>
+    <input class="w3-input w3-border w3-sand" name="n3" type="text" placeholder="Blood Pressure (mmHg) eg. 80"></p>
+    <input class="w3-input w3-border w3-sand" name="n4" type="text" placeholder="Skin Thickness (mm) eg. 20"></p>
+    <input class="w3-input w3-border w3-sand" name="n5" type="text" placeholder="Insulin Level (IU/mL) eg. 80"></p>
+    <input class="w3-input w3-border w3-sand" name="n6" type="text" placeholder="Body Mass Index (kg/m²) eg. 23.1"></p>
+    <input class="w3-input w3-border w3-sand" name="n7" type="text" placeholder="Diabetes Pedigree Function eg. 0.52"></p>
+    <input class="w3-input w3-border w3-sand" name="n8" type="text" placeholder="Age (years) eg. 34"></p>
+   <button class="button" style="vertical-align:middle" ><span>detecter diabete </span></button>
+    <input class="button" style="vertical-align:middle"  type="submit" value="predict"/>
+  </form>
+<textarea class="comment" name="result" readonly> {{result2}} </textarea>
+</div>
+{% endblock content %}
