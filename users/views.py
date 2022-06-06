@@ -1,6 +1,7 @@
 from email import message
 from click import password_option
 from django.shortcuts import render, redirect
+from torch import negative
 from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -26,6 +27,9 @@ from django.contrib import messages
 def home(request):
     return render(request, 'users/home.html')
 
+def admin(request):
+    return render(request, 'admin')
+
 def contact(request):
     #return HttpResponse('hi')
     return render (request, 'contact.html')
@@ -48,20 +52,6 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-"""def LoginView(request):
-    if request.method == "POST":
-        username=request.POST['username']
-        password=request.POST['password']
-        user = authenticate(request, username=username,password=password)
-        if user is not None:
-            login(request,username)
-            return redirect("users/login.html")
-        else:
-            message.success(request,'errrrrrrrr')
-            
-    context = {}
-    return render (request,"users/login.html")
-"""
 
 @login_required()
 def profile(request):
@@ -100,36 +90,41 @@ def result(request):
     val8 = float(request.POST.get('n8' , False)) 
 
     pred = model.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
-    print('pred is ',pred)
-
+    print('accurency is ',pred)
     result1 = ""
     if pred>[0.5]:
-        result1= "positive please contact us"
+        result1= "positif result please contact us"
     else:
-        result1 = "felicitation negative"
+        result1 = "felicitation negative result"
         
     if request.method == 'POST':
         username=request.POST.get('username')
         email=request.POST.get('email')
         result1=Result1(
-            n1=result1,
+            rzlt=result1,
             username=username,
             email=email
         ) 
+        x=0
+        x = Result1.objects.filter(username=username).count()
+        #print(username , x) 
         result1.save()
-    if pred>[0.5]:     
+       
+    if pred>[0.5]:    
         data ={
         'result1': result1,
         'username':username,
         'email':email
         }
+        
         message='''
         username: {}
         result: {}  
         email: {} 
         '''.format(data['username'],data['result1'],data['email'])
         send_mail(data['result1'],message,'',[email]) 
-        result1.save()           
+        result1.save()    
+           
     return render(request, 'home.html',{"result2":result1})
 #=========================ntestyy==============================#
 from .models import Result1
@@ -140,18 +135,21 @@ from django.core.mail import send_mail
 def contact(request):
     if request.method == 'POST':
         name=request.POST.get('name')
-        last=request.POST.get('last')
+        mobileC=request.POST.get('mobileC')
         email=request.POST.get('email')
         message=request.POST.get('message')
+        
         contact=Contact(
             name=name,
-            last=last,
+            mobileC=mobileC,
             email=email,
-            message=message
+            message=message,
+            
+            
         )
         data ={
             'name': name,
-            'last':last,
+            'mobileC':mobileC,
             'message':message,
             'email':email
         }
@@ -160,7 +158,7 @@ def contact(request):
         mobile : {}
         from: {}
         new msg: {}    
-        '''.format(data['name'],data['last'],data['email'],data['message'])
+        '''.format(data['name'],data['mobileC'],data['email'],data['message'])
         send_mail(data['message'],message,'',['predectydiabete@gmail.com'])
 
         contact.save()
@@ -168,3 +166,47 @@ def contact(request):
         return redirect('home')
     return render(request,'users/contact.html')
 
+
+
+
+
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import Result1
+from django.core import serializers
+
+'''def dashboard_with_pivot(request):
+    return render(request, 'dashboard_with_pivot.html', {})'''
+
+
+def test(request):
+    dataset = Result1.objects.all()
+    return render(request,'data.html',{'test': dataset})
+
+def dashboard_with_pivot(request):
+    n = Result1.objects.filter(rzlt='felicitation negative result').count()
+    p = Result1.objects.filter(rzlt='positif result please contact us').count()
+    context = {
+        'n':n,
+        'p':p
+    }   
+    return render(request,'dashboard_with_pivot.html',context)
+
+
+'''def test(request):
+    dataset = Result1.objects.all()
+    x = Result1.objects.filter(username='achraf').count()
+    x=x
+    print(x)
+    username=Result1.objects.filter(username='achraf')
+    nbtest=nbtest(
+        
+        username=username,
+        nb=x
+    ) 
+    x=0
+    x = Result1.objects.filter(username=username).count()
+        #print(username , x) 
+    print(x)
+    nbtest.save()
+    return render(request,'data.html',{'test': dataset})'''

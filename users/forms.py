@@ -12,6 +12,6 @@ class UserRegisterForm(UserCreationForm):
 
 class ContactForm(forms.Form):
 	name = forms.CharField(max_length = 50)
-	last = forms.CharField(max_length = 50)
+	mobileC = forms.CharField(max_length = 50)
 	email = forms.EmailField(max_length = 150)
 	message = forms.CharField(widget = forms.Textarea, max_length = 2000)
