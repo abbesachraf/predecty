@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from lib2to3.pgen2 import token
 from pathlib import Path
 import os
 
@@ -141,13 +142,12 @@ LOGIN_URL = 'login'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'predectydiabete@gmail.com'
-EMAIL_HOST_PASSWORD = 'doctorpassword'
+EMAIL_HOST_PASSWORD = 'hvvsvjuwvhmjncuy'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 #bech t9oss security when loging gmail account
 #https://myaccount.google.com/u/2/lesssecureapps
-
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -286,3 +286,7 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     #"language_chooser": True,
 }
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 600
+SESSION_SAVE_EVERY_REQUEST = True #t3awed te7sseb for unactive use

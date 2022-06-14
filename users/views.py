@@ -170,7 +170,7 @@ def contact(request):
 
 
 
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import Result1
 from django.core import serializers
@@ -210,3 +210,129 @@ def dashboard_with_pivot(request):
     print(x)
     nbtest.save()
     return render(request,'data.html',{'test': dataset})'''
+
+'''
+from django.shortcuts import render
+from .utils import*
+from django.contrib.auth.models import User
+from .models import *
+import uuid
+from .utils import *
+def register(request):
+    if request.method =='POST':
+        email=request.POST.get('email')
+        password=request.POST.get('password')
+        user_obj = User (username = email)
+        user_obj.set_password(password)
+        user_obj.save()
+        #User.save()
+        #User= User.save()
+        p_obj=Profile.objects.create(
+            user=user_obj,
+            email_token = str(uuid.uuid4())
+        )
+        send_email_token(email,p_obj.email_token)
+    return render(request,'users/register.html')
+
+def verify(request ,token):
+    try:
+        obj = Profile.objects.get(email_token = token)
+        obj.is_verified = True
+        obj.save()
+        return HttpResponse('verified')
+
+    except Exception as e:
+        return HttpResponse('non verified')
+'''
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from .forms import UserRegisterForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+
+
+def home(request):
+    return render(request, 'home.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            message = render_to_string('acc_active_email.html', {
+                'user':user, 'domain':current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            # Sending activation link in terminal
+            # user.email_user(subject, message)
+            mail_subject = 'Activate your Predecty account.'
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            #return HttpResponse('Please confirm your email address to complete the registration.')
+            messages.success(request, f'Hi {user}, Please confirm your email address to complete the registration.')
+            return redirect('home')
+            # return render(request, 'acc_active_sent.html')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'register.html', {'form': form})
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        messages.success(request, f'Hi {user}, your account activated')
+        return redirect('home')
+    else:
+        messages.success(request, f'Hi {user}, your account not activate re-signup or contact us')
+        return redirect('home')
+
+
+from django.urls import reverse
+from .forms import EditProfileForm
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('profile'))
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'edit_profile.html', args)
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect(reverse('profile'))
+        else:
+            return redirect(reverse('change_password'))
+    else:
+        form = PasswordChangeForm(user=request.user)
+
+        args = {'form': form}
+        return render(request, 'change_password.html', args)

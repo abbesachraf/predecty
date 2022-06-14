@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Profile</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="alert alert-{{message.tags}}">{{form.errors}}</div>
+        <div class="w3-card-2" style="padding:0 00px; width: 50%;">         
+            <form class="w3-container" method="post" action="">
+                    {% csrf_token %}
+                            <br/>
+                            
+                        new full name:<input class="w3-input w3-border w3-sand"  name="first_name" type="text" placeholder="full Name" required></p>
+                        New Mobile:<input class="w3-input w3-border w3-sand"  name="last_name" type="number" placeholder="mobile number" required></p>
+                        New Email    :<input class="w3-input w3-border w3-sand"  name="email" type="email" placeholder="Email" required></p>
+                <div class="form-group" id="signup-button">
+                    <button class="btn ">change</button>
+                </div>
+                <div class="form-group">
+                    <small class="text-muted ml-3" >you want to change password? <a href="{% url 'change_password' %}">Change password</a></small>
+                </div>
+                <!--
+                    <div class="alert alert-{{message.tags}}">{{form.errors}}</div>
+                -->
+            </form>
+        </div>
+
+    </form>
+    <br>
+</div>
+
+{% endblock %}
