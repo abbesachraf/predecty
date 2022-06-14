@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_superuser %}
+
+    {% if test %}
+    <h1>publish/update result</h1>
+    <table>
+            <tr><br/>
+                <th>ID</th>
+                <th>result</th>
+                <th>username</th>
+                <th>Email</th>
+                <th>Published At</th>
+                <th>Last Update</th>
+                
+            </tr>
+            
+        <tr>
+            {% for st in test %}
+            <td>{{st.id}}</td>
+            <td>{{st.rzlt}}</td>
+            <td>{{st.username}}</td>
+            <td>{{st.email}}</td>
+            <td>{{st.created_at}}</td>
+            <td>{{st.updated_at}}</td>    
+        </tr>
+            {% endfor %}
+    </table>
+    {% else %}
+        <h1>No Data</h1>
+    {% endif %}
+
+{% else %}
+<h1>denied please login as a doctor (superadmin)</h1>
+{% endif %}
+
+{% endblock content %}
+
+
+
