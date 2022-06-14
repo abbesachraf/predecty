@@ -34,7 +34,7 @@
             </div>
             
             <form class="d-flex" id="authstyle">
-              {% if user.is_superuser %}
+              {% if user.is_superuser or user.groups.all %}
                 <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #04AA6D;"type="submit" id="header-links"> Profile </a>
                 <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #04AA6D;"type="submit" id="header-links"> Logout </a>
                 <a href="{% url 'admin' %}" class="btn" style="color: white; background-color: #04AA6D;"type="submit" id="header-links"> admin </a>
