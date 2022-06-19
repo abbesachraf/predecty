@@ -14,11 +14,10 @@ from lib2to3.pgen2 import token
 from pathlib import Path
 import os
 
-<<<<<<< HEAD
+
 #from numpy import True_
 
-=======
->>>>>>> masterbranch
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -153,8 +152,6 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 #bech t9oss security when loging gmail account
 #https://myaccount.google.com/u/2/lesssecureapps
-<<<<<<< HEAD
-=======
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -297,4 +294,4 @@ JAZZMIN_SETTINGS = {
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 600
 SESSION_SAVE_EVERY_REQUEST = True #t3awed te7sseb for unactive use
->>>>>>> masterbranch
+

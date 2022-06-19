@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if user.is_superuser %}
+{% if user.is_superuser or user.groups.all %}
 
     {% if test %}
     <h1>publish/update result</h1>
